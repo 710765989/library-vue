@@ -2,8 +2,9 @@
   <div class="app-container">
     <el-form ref="form" :model="form">
       <el-form-item>
-        <el-input v-model="form.name" style="width: 20%; margin-right: 5px;" placeholder="输入需要查询的图书名称"/>
-        <el-button type="primary" @click="query">查询书籍</el-button>
+        <el-input v-model="form.name" style="width: 20%;" placeholder="输入需要查询的图书名称"/>
+        <el-button @click="query"><svg-icon icon-class="search"/></el-button>
+        <el-button style="float: right" type="primary" @click="create">添加书籍</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -36,13 +37,15 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="借阅状态" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.value }}</el-tag>
+          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.statusValue }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="操作" width="300" align="center">
-        <el-button type="primary">查看</el-button>
-        <el-button type="warning">编辑</el-button>
-        <el-button type="danger">删除</el-button>
+        <template slot-scope="scope">
+          <el-button type="primary" @click="info">查看</el-button>
+          <el-button type="warning" @click="edit(scope.row)">编辑</el-button>
+          <el-button type="danger" @click="del(scope.row.id)">删除</el-button>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -98,6 +101,20 @@ export default {
         this.list = response.data.items
         this.listLoading = false
       })
+    },
+    create() {
+      console.log('添加书籍')
+    },
+    info() {
+      console.log('图书信息')
+    },
+    edit(info) {
+      console.log('编辑书籍')
+      console.log(info)
+
+    },
+    del(id) {
+      console.log('确定删除' + id + '吗？')
     }
   }
 }

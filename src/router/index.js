@@ -67,8 +67,26 @@ export const constantRoutes = [
         component: () => import('@/views/book/list/index'),
         meta: { title: '图书列表', icon: 'table' }
       }
+      // {
+      //   path: 'edit',
+      //   name: '编辑图书',
+      //   component: () => import('@/views/book/list/edit'),
+      //   meta: { title: '编辑图书', icon: 'form' }
+      // }
     ]
   },
+  // {
+  //   path: '/management',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'edit',
+  //       name: '编辑图书',
+  //       component: () => import('@/views/book/list/edit'),
+  //       meta: { title: '编辑图书', icon: 'form' }
+  //     }
+  //   ]
+  // },
   {
     path: '/example',
     component: Layout,
