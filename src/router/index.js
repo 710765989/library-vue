@@ -66,13 +66,46 @@ export const constantRoutes = [
         name: 'list',
         component: () => import('@/views/book/list/index'),
         meta: { title: '图书列表', icon: 'table' }
+      },
+      {
+        path: 'edit',
+        name: 'edit',
+        component: () => import('@/views/book/list/edit'),
+        meta: { title: '新增/编辑图书', icon: 'form' }
       }
-      // {
-      //   path: 'edit',
-      //   name: '编辑图书',
-      //   component: () => import('@/views/book/list/edit'),
-      //   meta: { title: '编辑图书', icon: 'form' }
-      // }
+    ]
+  },
+  {
+    path: '/borrow',
+    component: Layout,
+    redirect: '/borrow/borrow',
+    name: 'Example',
+    meta: { title: '个人管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'borrow',
+        name: 'borrow',
+        component: () => import('@/views/book/list/index'),
+        meta: { title: '我的借阅', icon: 'table' }
+      },
+      {
+        path: 'return',
+        name: 'return',
+        component: () => import('@/views/book/list/edit'),
+        meta: { title: '归还图书', icon: 'form' }
+      },
+      {
+        path: 'renewal',
+        name: 'renewal',
+        component: () => import('@/views/book/list/edit'),
+        meta: { title: '图书续借', icon: 'form' }
+      },
+      {
+        path: 'log',
+        name: 'log',
+        component: () => import('@/views/book/list/edit'),
+        meta: { title: '延期记录', icon: 'form' }
+      }
     ]
   },
   // {
