@@ -101,9 +101,9 @@ export const constantRoutes = [
       //   meta: { title: '图书续借', icon: 'form' }
       // },
       {
-        path: 'log',
-        name: 'log',
-        component: () => import('@/views/book/list/edit'),
+        path: 'delay',
+        name: 'delay',
+        component: () => import('@/views/book/delay/index'),
         meta: { title: '延期记录', icon: 'form' }
       },
       {
