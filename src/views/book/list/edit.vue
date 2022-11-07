@@ -40,7 +40,7 @@
 //   name: 'info.vue'
 // }
 import { save } from '@/api/list'
-import { status, type } from '@/api/dictionary'
+import { bookStatuses, bookTypes } from '@/api/dictionary'
 export default {
   data() {
     return {
@@ -59,7 +59,7 @@ export default {
     if (info && JSON.stringify(info) !== '{}') {
       this.form = info
     }
-    status().then(r => {
+    bookStatuses().then(r => {
       if (r.code === 0) {
         this.bookStatus = r.data
         console.log(r.data)
@@ -67,7 +67,7 @@ export default {
         console.log(r.message)
       }
     })
-    type().then(r => {
+    bookTypes().then(r => {
       if (r.code === 0) {
         this.bookType = r.data
         console.log(r.data)

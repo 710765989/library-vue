@@ -85,7 +85,7 @@ export const constantRoutes = [
       {
         path: 'list',
         name: 'list',
-        component: () => import('@/views/book/list/index'),
+        component: () => import('@/views/book/borrow/index'),
         meta: { title: '我的借阅', icon: 'table' }
       },
       {
