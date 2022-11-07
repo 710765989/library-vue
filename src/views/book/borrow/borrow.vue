@@ -1,14 +1,17 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px">
+      <el-form-item style="display: none">
+        <el-input v-model="form.bookId" disabled />
+      </el-form-item>
       <el-form-item label="书名">
-        <el-input v-model="form.name" />
+        <el-input v-model="form.name" disabled />
       </el-form-item>
       <el-form-item label="作者">
-        <el-input v-model="form.author" />
+        <el-input v-model="form.author" disabled />
       </el-form-item>
       <el-form-item label="书籍类型">
-        <el-select v-model="form.type" placeholder="选择书籍类型">
+        <el-select v-model="form.type" placeholder="选择书籍类型" disabled>
           <el-option
             v-for="item in bookType"
             :key="item.value"
@@ -18,7 +21,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="借阅状态">
-        <el-select v-model="form.status" placeholder="选择借阅状态">
+        <el-select v-model="form.status" placeholder="选择借阅状态" disabled>
           <el-option
             v-for="item in bookStatus"
             :key="item.value"
@@ -26,6 +29,9 @@
             :value="item.value"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="归还时间">
+        <el-date-picker v-model="form.returnTime" value-format="yyyy-MM-dd 23:59:59" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -39,25 +45,29 @@
 // export default {
 //   name: 'info.vue'
 // }
-import { save } from '@/api/list'
+import { save } from '@/api/borrow'
 import { status, type } from '@/api/dictionary'
 export default {
   data() {
     return {
       form: {
+        bookId: '',
         name: '',
         author: '',
         type: '',
-        status: ''
+        status: '',
+        returnTime: ''
       },
-      bookStatus: [],
-      bookType: []
+      bookType: [],
+      bookStatus: []
     }
   },
   created() {
     const info = this.$route.params
     if (info && JSON.stringify(info) !== '{}') {
+      info.bookId = info.id
       this.form = info
+      console.log(info)
     }
     status().then(r => {
       if (r.code === 0) {
@@ -78,6 +88,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      console.log(this.form)
       save(this.form).then(r => {
         if (r.code === 0) {
           this.$router.push({ name: 'list' })
@@ -88,6 +99,10 @@ export default {
       })
     },
     onCancel() {
+      // this.$message({
+      //   message: 'cancel!',
+      //   type: 'warning'
+      // })
       history.back()
     }
   }
