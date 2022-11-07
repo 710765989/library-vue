@@ -125,7 +125,6 @@ export default {
       this.$router.push({ name: 'edit', params: info })
     },
     borrow(info) {
-      console.log('借阅图书')
       this.$router.push({ name: 'borrow', params: info })
     },
     enable(id, delFlag) {

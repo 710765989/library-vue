@@ -53,11 +53,11 @@
       </el-table-column>
       <el-table-column class-name="status-col" label="操作" width="300" align="center">
         <template slot-scope="scope">
-          <template v-if="scope.row.delFlag === '0' && scope.row.status === '0'">
-            <el-button type="primary" @click="borrow(scope.row)">借阅</el-button>
+          <template v-if="scope.row.status === '1'">
+            <el-button type="primary" @click="returnBook(scope.row.id)">归还</el-button>
+            <el-button type="warning" @click="edit(scope.row)">续借</el-button>
           </template>
-          <el-button type="warning" @click="edit(scope.row)">编辑</el-button>
-          <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>
+<!--          <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>-->
         </template>
       </el-table-column>
 <!--      <el-table-column class-name="status-col" label="操作" width="300" align="center">-->
@@ -79,7 +79,7 @@
 </style>
 <script>
 import { getList, enable } from '@/api/list'
-import { list } from '@/api/borrow'
+import { list, returnBook } from '@/api/borrow'
 
 export default {
   filters: {
@@ -118,35 +118,42 @@ export default {
         this.listLoading = false
       })
     },
-    query() {
-      this.listLoading = true
-      getList(this.form).then(response => {
-        this.list = response.data
-        this.listLoading = false
-      })
-    },
+    // query() {
+    //   this.listLoading = true
+    //   getList(this.form).then(response => {
+    //     this.list = response.data
+    //     this.listLoading = false
+    //   })
+    // },
     create() {
       this.$router.push({ name: 'edit' })
     },
     edit(info) {
       this.$router.push({ name: 'edit', params: info })
     },
-    borrow(info) {
-      console.log('借阅图书')
-      this.$router.push({ name: 'borrow', params: info })
-    },
-    enable(id, delFlag) {
-      enable({ id: id, delFlag: delFlag }).then(r => {
-        if (r.code === 0) {
-          this.$router.push({ name: 'list' })
-          // 刷新数据
-          this.query()
+    returnBook(id) {
+      // this.$router.push({ name: 'borrow', params: info })
+      returnBook(id).then(r => {
+        if (r.code === '0') {
+          this.fetchData()
           this.$message('操作成功')
         } else {
-          this.$message('操作失败')
+          this.$message('操作成功')
         }
       })
-    }
+    },
+    // enable(id, delFlag) {
+    //   enable({ id: id, delFlag: delFlag }).then(r => {
+    //     if (r.code === 0) {
+    //       this.$router.push({ name: 'list' })
+    //       // 刷新数据
+    //       this.query()
+    //       this.$message('操作成功')
+    //     } else {
+    //       this.$message('操作失败')
+    //     }
+    //   })
+    // }
   }
 }
 </script>

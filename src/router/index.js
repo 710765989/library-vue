@@ -88,18 +88,18 @@ export const constantRoutes = [
         component: () => import('@/views/book/borrow/index'),
         meta: { title: '我的借阅', icon: 'table' }
       },
-      {
-        path: 'return',
-        name: 'return',
-        component: () => import('@/views/book/list/edit'),
-        meta: { title: '归还图书', icon: 'form' }
-      },
-      {
-        path: 'renewal',
-        name: 'renewal',
-        component: () => import('@/views/book/list/edit'),
-        meta: { title: '图书续借', icon: 'form' }
-      },
+      // {
+      //   path: 'return',
+      //   name: 'return',
+      //   component: () => import('@/views/book/list/edit'),
+      //   meta: { title: '归还图书', icon: 'form' }
+      // },
+      // {
+      //   path: 'renewal',
+      //   name: 'renewal',
+      //   component: () => import('@/views/book/list/edit'),
+      //   meta: { title: '图书续借', icon: 'form' }
+      // },
       {
         path: 'log',
         name: 'log',

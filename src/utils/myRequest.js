@@ -14,6 +14,7 @@ export function post(url, params) {
     method: 'post',
     url: url
   }
+  console.log(params)
   if (params) config.data = params
   return request(config)
 }

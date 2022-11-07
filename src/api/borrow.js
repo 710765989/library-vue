@@ -8,10 +8,6 @@ export function list() {
   return get('/borrow/list')
 }
 
-// export function status(params) {
-//   return get('/dictionary/list', { 'key': 'book.status' })
-// }
-//
-// export function type(params) {
-//   return get('/dictionary/list', { 'key': 'book.type' })
-// }
+export function returnBook(id) {
+  return post('/borrow/return/' + id)
+}
