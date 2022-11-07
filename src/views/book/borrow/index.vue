@@ -51,6 +51,15 @@
           <span>{{ scope.row.realReturnTime }}</span>
         </template>
       </el-table-column>
+      <el-table-column class-name="status-col" label="操作" width="300" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.delFlag === '0' && scope.row.status === '0'">
+            <el-button type="primary" @click="borrow(scope.row)">借阅</el-button>
+          </template>
+          <el-button type="warning" @click="edit(scope.row)">编辑</el-button>
+          <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>
+        </template>
+      </el-table-column>
 <!--      <el-table-column class-name="status-col" label="操作" width="300" align="center">-->
 <!--        <template slot-scope="scope">-->
 <!--          <template v-if="scope.row.delFlag === '0' && scope.row.status === '0'">-->
