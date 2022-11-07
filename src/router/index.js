@@ -144,6 +144,12 @@ export const constantRoutes = [
         name: 'permission',
         component: () => import('@/views/system/permission'),
         meta: { title: '权限管理', icon: 'table' }
+      },
+      {
+        path: 'password',
+        name: 'password',
+        component: () => import('@/views/system/permission'),
+        meta: { title: '修改密码', icon: 'table' }
       }
     ]
   },

@@ -1,22 +1,6 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form">
-<!--      <el-form-item>-->
-<!--        <el-input v-model="form.name" style="width: 15%;" placeholder="输入需要查询的图书名称" />-->
-<!--        <el-input v-model="form.author" style="width: 15%;" placeholder="输入需要查询的作者" />-->
-<!--        <el-select v-model="form.type" style="width: 10%;" placeholder="选择书籍类型">-->
-<!--          <el-option label="&#45;&#45; 任意 &#45;&#45;" value="" />-->
-<!--          <el-option label="教育" value="1" />-->
-<!--          <el-option label="工具" value="2" />-->
-<!--        </el-select>-->
-<!--        <el-select v-model="form.status" style="width: 10%;" placeholder="选择借阅状态">-->
-<!--          <el-option label="&#45;&#45; 任意 &#45;&#45;" value="" />-->
-<!--          <el-option label="在库" value="0" />-->
-<!--          <el-option label="借出" value="1" />-->
-<!--        </el-select>-->
-<!--        <el-button @click="query"><svg-icon icon-class="search" /></el-button>-->
-<!--        <el-button style="float: right" type="primary" @click="create">添加书籍</el-button>-->
-<!--      </el-form-item>-->
     </el-form>
     <el-table
       v-loading="listLoading"
@@ -36,9 +20,9 @@
           {{ scope.row.bookName }}
         </template>
       </el-table-column>
-      <el-table-column label="归还状态" width="110" align="center">
+      <el-table-column class-name="status-col" label="归还状态" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.statusText }}</span>
+          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.statusText }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="预计归还时间" width="110" align="center">
@@ -54,7 +38,7 @@
       <el-table-column class-name="status-col" label="操作" width="300" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.status === '1'">
-            <el-button type="primary" @click="returnBook(scope.row.id)">归还</el-button>
+            <el-button type="primary" @click="returnBook(scope.row)">归还</el-button>
             <el-button type="warning" @click="edit(scope.row)">续借</el-button>
           </template>
 <!--          <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>-->
@@ -85,16 +69,9 @@ export default {
     statusFilter(status) {
       const statusMap = {
         '0': 'success',
-        '1': 'primary'
+        '1': 'danger'
       }
       return statusMap[status]
-    },
-    delFilter(delFlag) {
-      const statusMap = {
-        '0': 'danger',
-        '1': 'success'
-      }
-      return statusMap[delFlag]
     }
   },
   data() {
@@ -130,14 +107,16 @@ export default {
     edit(info) {
       this.$router.push({ name: 'edit', params: info })
     },
-    returnBook(id) {
+    returnBook(info) {
       // this.$router.push({ name: 'borrow', params: info })
-      returnBook(id).then(r => {
-        if (r.code === '0') {
+      // this.$modal.confirm('是否确认归还图书[' + info.bookName + ']？')
+      returnBook(info.id).then(r => {
+        console.log(r)
+        if (r.code === 0) {
           this.fetchData()
           this.$message('操作成功')
         } else {
-          this.$message('操作成功')
+          this.$message('操作失败')
         }
       })
     },
