@@ -148,7 +148,7 @@ export const constantRoutes = [
       {
         path: 'password',
         name: 'password',
-        component: () => import('@/views/system/permission'),
+        component: () => import('@/views/system/password'),
         meta: { title: '修改密码', icon: 'table' }
       }
     ]
