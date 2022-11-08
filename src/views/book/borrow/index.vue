@@ -123,15 +123,18 @@ export default {
     },
     returnBook(info) {
       // this.$router.push({ name: 'borrow', params: info })
-      // this.$modal.confirm('是否确认归还图书[' + info.bookName + ']？')
-      returnBook(info.id).then(r => {
+      this.$confirm('是否确认归还图书《' + info.bookName + '》？').then(() => {
+        returnBook(info.id).then(r => {
+          console.log(r)
+          if (r.code === 0) {
+            this.fetchData()
+            this.$message('操作成功')
+          } else {
+            this.$message('操作失败')
+          }
+        })
+      }).catch(r => {
         console.log(r)
-        if (r.code === 0) {
-          this.fetchData()
-          this.$message('操作成功')
-        } else {
-          this.$message('操作失败')
-        }
       })
     },
     // enable(id, delFlag) {

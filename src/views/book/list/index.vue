@@ -58,7 +58,7 @@
           </template>
           <el-button type="warning" @click="edit(scope.row)">编辑</el-button>
           <template v-if="scope.row.status === '0'">
-            <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>
+            <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>
           </template>
         </template>
       </el-table-column>
@@ -129,16 +129,21 @@ export default {
     borrow(info) {
       this.$router.push({ name: 'borrow', params: info })
     },
-    enable(id, delFlag) {
-      enable({ id: id, delFlag: delFlag }).then(r => {
-        if (r.code === 0) {
-          this.$router.push({ name: 'list' })
-          // 刷新数据
-          this.query()
-          this.$message('操作成功')
-        } else {
-          this.$message('操作失败')
-        }
+    enable(info) {
+      const enableText = info.delFlag === '1' ? '启用' : '停用'
+      this.$confirm('是否确认' + enableText + '图书《' + info.name + '》？').then(() => {
+        enable({ id: info.id, delFlag: info.delFlag }).then(r => {
+          if (r.code === 0) {
+            this.$router.push({ name: 'list' })
+            // 刷新数据
+            this.query()
+            this.$message('操作成功')
+          } else {
+            this.$message('操作失败')
+          }
+        })
+      }).catch(r => {
+        console.log(r)
       })
     }
   }
