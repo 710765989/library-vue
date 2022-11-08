@@ -35,11 +35,18 @@
           <span>{{ scope.row.realReturnTime }}</span>
         </template>
       </el-table-column>
+      <el-table-column class-name="status-col" label="是否续借" width="110" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.delayFlag | delayFlagFilter">{{ scope.row.delayFlag === '1' ? '是' : '否' }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column class-name="status-col" label="操作" width="300" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.status === '1'">
             <el-button type="primary" @click="returnBook(scope.row)">归还</el-button>
-            <el-button type="warning" @click="edit(scope.row)">续借</el-button>
+            <template v-if="scope.row.delayFlag !== '1'">
+              <el-button type="warning" @click="edit(scope.row)">续借</el-button>
+            </template>
           </template>
 <!--          <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>-->
         </template>
@@ -72,6 +79,13 @@ export default {
         '1': 'danger'
       }
       return statusMap[status]
+    },
+    delayFlagFilter(flag) {
+      const statusMap = {
+        '0': 'success',
+        '1': 'warning'
+      }
+      return statusMap[flag]
     }
   },
   data() {
