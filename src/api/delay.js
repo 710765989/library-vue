@@ -4,8 +4,8 @@ export function list() {
   return get('/delay/list')
 }
 
-export function save(params) {
-  return post('/borrow/save', params)
+export function delay(id) {
+  return post('/delay/' + id)
 }
 
 export function returnBook(id) {

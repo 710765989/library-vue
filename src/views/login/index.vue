@@ -59,6 +59,11 @@ export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入用户名'))
+      } else {
+        callback()
+      }
       if (!validUsername(value)) {
         callback(new Error('请输入正确的用户名'))
       } else {
@@ -66,9 +71,14 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error('请输入登录密码'))
+      } else {
+        callback()
+      }
       if (value.length < 6) {
         // callback(new Error('密码不能少于6位'))
-        callback(new Error('密码不正确'))
+        callback(new Error('密码格式不正确'))
       } else {
         callback()
       }
@@ -111,7 +121,8 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+            // this.$router.push({ path: this.redirect || '/' })
+            this.$router.push({ name: 'dashboard' })
             this.loading = false
           }).catch(() => {
             this.loading = false

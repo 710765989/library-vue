@@ -11,3 +11,4 @@ export function list() {
 export function returnBook(id) {
   return post('/borrow/return/' + id)
 }
+

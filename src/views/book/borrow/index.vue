@@ -45,7 +45,7 @@
           <template v-if="scope.row.status === '1'">
             <el-button type="primary" @click="returnBook(scope.row)">归还</el-button>
             <template v-if="scope.row.delayFlag !== '1'">
-              <el-button type="warning" @click="edit(scope.row)">续借</el-button>
+              <el-button type="warning" @click="delay(scope.row)">续借</el-button>
             </template>
           </template>
 <!--          <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>-->
@@ -70,6 +70,7 @@
 </style>
 <script>
 import { list, returnBook } from '@/api/borrow'
+import { delay } from '@/api/delay'
 
 export default {
   filters: {
@@ -118,8 +119,21 @@ export default {
     create() {
       this.$router.push({ name: 'edit' })
     },
-    edit(info) {
-      this.$router.push({ name: 'edit', params: info })
+    delay(info) {
+      // this.$router.push({ name: 'edit', params: info })
+      this.$confirm('是否确认续借图书《' + info.bookName + '》7天？注意：只能续借一次！').then(() => {
+        delay(info.id).then(r => {
+          console.log(r)
+          if (r.code === 0) {
+            this.fetchData()
+            this.$message('操作成功')
+          } else {
+            this.$message('操作失败')
+          }
+        })
+      }).catch(r => {
+        console.log(r)
+      })
     },
     returnBook(info) {
       // this.$router.push({ name: 'borrow', params: info })
