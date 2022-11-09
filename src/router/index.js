@@ -139,12 +139,12 @@ export const constantRoutes = [
       //   component: () => import('@/views/book/list/edit'),
       //   meta: { title: '图书续借', icon: 'form' }
       // },
-      {
-        path: 'permission',
-        name: 'permission',
-        component: () => import('@/views/system/permission'),
-        meta: { title: '权限管理', icon: 'table' }
-      },
+      // {
+      //   path: 'permission',
+      //   name: 'permission',
+      //   component: () => import('@/views/system/permission'),
+      //   meta: { title: '权限管理', icon: 'table' }
+      // },
       {
         path: 'password',
         name: 'password',

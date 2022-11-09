@@ -7,7 +7,7 @@
             <el-input v-model="dialogModel.username" maxlength="15" placeholder="请输入用户账号"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12" v-if="!dialogModel.id">
+        <el-col v-if="!dialogModel.id" :span="12">
           <el-form-item label="用户密码" prop="password">
             <el-input v-model="dialogModel.password" type="password" maxlength="20" show-password placeholder="请输入用户密码" autocomplete="new-password"></el-input>
           </el-form-item>
@@ -39,7 +39,7 @@ export default {
   name: 'UserChange',
   data() {
     return {
-      initPassword: '123456',
+      initPassword: '',
       dialogVisible: false,
       dialogLoading: false,
       dialogType: 0,
@@ -51,8 +51,8 @@ export default {
   created() {
   },
   methods: {
-    handleChange(row = {id: 0}) {
-      const {id} = row
+    handleChange(row = { id: 0 }) {
+      const { id } = row
       this.dialogType = id ? 1 : 0
       this.dialogModel = id ? Object.assign({}, row) : {
         id,
@@ -66,11 +66,11 @@ export default {
         this.dialogLoading = true
       }, 0)
       getUserOne(id).then(res => {
-        const {posts = [], roles = [], postIds = [], roleIds = []} = res
+        const { posts = [], roles = [], postIds = [], roleIds = [] } = res
         this.postOptions = posts
-        this.roleOptions = [{'roleId': '0', 'roleName': '管理员'},
-          {'roleId': '1', 'roleName': '普通用户'}]
-        Object.assign(this.dialogModel, {postIds, roleIds})
+        this.roleOptions = [{ 'roleId': '0', 'roleName': '管理员' },
+          { 'roleId': '1', 'roleName': '普通用户' }]
+        Object.assign(this.dialogModel, { postIds, roleIds })
         this.dialogLoading = false
       })
     },

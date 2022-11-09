@@ -4,22 +4,6 @@
       <el-form-item>
         <el-button type="primary" @click="$refs.userChange.handleChange()" icon="el-icon-plus">新增</el-button>
       </el-form-item>
-<!--      <el-form-item>-->
-<!--        <el-input v-model="form.name" style="width: 15%;" placeholder="输入需要查询的图书名称" />-->
-<!--        <el-input v-model="form.author" style="width: 15%;" placeholder="输入需要查询的作者" />-->
-<!--        <el-select v-model="form.type" style="width: 10%;" placeholder="选择书籍类型">-->
-<!--          <el-option label="&#45;&#45; 任意 &#45;&#45;" value="" />-->
-<!--          <el-option label="教育" value="1" />-->
-<!--          <el-option label="工具" value="2" />-->
-<!--        </el-select>-->
-<!--        <el-select v-model="form.status" style="width: 10%;" placeholder="选择借阅状态">-->
-<!--          <el-option label="&#45;&#45; 任意 &#45;&#45;" value="" />-->
-<!--          <el-option label="在库" value="0" />-->
-<!--          <el-option label="借出" value="1" />-->
-<!--        </el-select>-->
-<!--        <el-button @click="query"><svg-icon icon-class="search" /></el-button>-->
-<!--        <el-button style="float: right" type="primary" @click="create">添加书籍</el-button>-->
-<!--      </el-form-item>-->
     </el-form>
     <el-table
       v-loading="listLoading"
@@ -28,27 +12,26 @@
       border
       fit
       highlight-current-row
-      style="width: 756px"
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="ID">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名" width="250">
+      <el-table-column label="用户名">
         <template slot-scope="scope">
           {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column label="角色" width="110" align="center">
+      <el-table-column label="角色" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.type | typeFilter }}</span>
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="操作" width="300" align="center">
+      <el-table-column class-name="status-col" label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="$refs.userChange.handleChange(scope.row)">编辑</el-button>
-          <el-button type="warning" @click="handleDelete(scope.row.id)">删除</el-button>
+          <el-button type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -113,14 +96,14 @@ export default {
     create() {
       this.$router.push({ name: 'edit' })
     },
-    handleDelete (id) {
+    handleDelete(id) {
       this.$confirm('是否确认删除选择的用户').then(() => {
         delUser(id).then(() => {
           this.fetchData()
           this.$message.success('刪除成功')
         })
       })
-    },
+    }
   }
 }
 </script>

@@ -30,15 +30,14 @@ export function list() {
   })
 }
 
-
-export function getUserOne (userId) {
+export function getUserOne(userId) {
   return request({
     url: `/user/${userId || ''}`,
     method: 'get'
   })
 }
 
-export function addUser (data) {
+export function addUser(data) {
   return request({
     url: '/user/add',
     method: 'post',
@@ -46,7 +45,7 @@ export function addUser (data) {
   })
 }
 
-export function updateUser (data) {
+export function updateUser(data) {
   return request({
     url: '/user/update',
     method: 'post',
@@ -54,7 +53,7 @@ export function updateUser (data) {
   })
 }
 
-export function delUser (userId) {
+export function delUser(userId) {
   return request({
     url: `/user/${userId || ''}`,
     method: 'delete'
