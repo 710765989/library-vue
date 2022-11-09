@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form">
+      <el-form-item>
+        <el-button type="primary" @click="$refs.userChange.handleChange()" icon="el-icon-plus">新增</el-button>
+      </el-form-item>
 <!--      <el-form-item>-->
 <!--        <el-input v-model="form.name" style="width: 15%;" placeholder="输入需要查询的图书名称" />-->
 <!--        <el-input v-model="form.author" style="width: 15%;" placeholder="输入需要查询的作者" />-->
@@ -25,51 +28,31 @@
       border
       fit
       highlight-current-row
+      style="width: 756px"
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="书名">
+      <el-table-column label="用户名" width="250">
         <template slot-scope="scope">
-          {{ scope.row.bookName }}
+          {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column label="归还状态" width="110" align="center">
+      <el-table-column label="角色" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.statusText }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="预计归还时间" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.returnTime }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="实际归还时间" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.realReturnTime }}</span>
+          <span>{{ scope.row.type | typeFilter }}</span>
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="操作" width="300" align="center">
         <template slot-scope="scope">
-          <template v-if="scope.row.status === '1'">
-            <el-button type="primary" @click="returnBook(scope.row.id)">归还</el-button>
-            <el-button type="warning" @click="edit(scope.row)">续借</el-button>
-          </template>
-<!--          <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>-->
+          <el-button type="primary" @click="$refs.userChange.handleChange(scope.row)">编辑</el-button>
+          <el-button type="warning" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
-<!--      <el-table-column class-name="status-col" label="操作" width="300" align="center">-->
-<!--        <template slot-scope="scope">-->
-<!--          <template v-if="scope.row.delFlag === '0' && scope.row.status === '0'">-->
-<!--            <el-button type="primary" @click="borrow(scope.row)">借阅</el-button>-->
-<!--          </template>-->
-<!--          <el-button type="warning" @click="edit(scope.row)">编辑</el-button>-->
-<!--          <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row.id, scope.row.delFlag)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
     </el-table>
+    <UserChange ref="userChange" @ok="fetchData()"></UserChange>
   </div>
 </template>
 <style>
@@ -78,9 +61,12 @@
 }
 </style>
 <script>
-import { list, returnBook } from '@/api/borrow'
+import { list } from '@/api/user'
+import UserChange from "@/views/system/user-change";
+import {delUser} from "@/api/user";
 
 export default {
+  components: {UserChange},
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -95,6 +81,13 @@ export default {
         '1': 'success'
       }
       return statusMap[delFlag]
+    },
+    typeFilter(type){
+      const typeMap = {
+        '0': '管理员',
+        '1': '普通用户'
+      }
+      return typeMap[type]
     }
   },
   data() {
@@ -117,42 +110,17 @@ export default {
         this.listLoading = false
       })
     },
-    // query() {
-    //   this.listLoading = true
-    //   getList(this.form).then(response => {
-    //     this.list = response.data
-    //     this.listLoading = false
-    //   })
-    // },
     create() {
       this.$router.push({ name: 'edit' })
     },
-    edit(info) {
-      this.$router.push({ name: 'edit', params: info })
-    },
-    returnBook(id) {
-      // this.$router.push({ name: 'borrow', params: info })
-      returnBook(id).then(r => {
-        if (r.code === '0') {
+    handleDelete (id) {
+      this.$confirm('是否确认删除选择的用户').then(() => {
+        delUser(id).then(() => {
           this.fetchData()
-          this.$message('操作成功')
-        } else {
-          this.$message('操作成功')
-        }
+          this.$message.success('刪除成功')
+        })
       })
     },
-    // enable(id, delFlag) {
-    //   enable({ id: id, delFlag: delFlag }).then(r => {
-    //     if (r.code === 0) {
-    //       this.$router.push({ name: 'list' })
-    //       // 刷新数据
-    //       this.query()
-    //       this.$message('操作成功')
-    //     } else {
-    //       this.$message('操作失败')
-    //     }
-    //   })
-    // }
   }
 }
 </script>
