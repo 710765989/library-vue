@@ -36,7 +36,7 @@
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
+        <span class="show-password" @click="showPassword">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
@@ -106,7 +106,7 @@ export default {
     }
   },
   methods: {
-    showPwd() {
+    showPassword() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -236,7 +236,7 @@ $light_gray:#eee;
     }
   }
 
-  .show-pwd {
+  .show-password {
     position: absolute;
     right: 10px;
     top: 7px;
