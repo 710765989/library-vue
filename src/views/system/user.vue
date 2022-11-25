@@ -86,6 +86,7 @@ export default {
   },
   created() {
     if (this.userType !== 'current_manager') {
+      this.listLoading = false
       this.$alert('权限不足', {
         callback: action => {
           history.back()
