@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form ref="form" :model="form">
       <el-form-item>
-        <el-button type="primary" @click="$refs.userChange.handleChange()" icon="el-icon-plus">新增</el-button>
+        <el-button type="primary" @click="$refs.userChange.handleChange()" icon="el-icon-plus" v-if="userType === 'current_manager'">新增</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -45,11 +45,12 @@
 </style>
 <script>
 import { list } from '@/api/user'
-import UserChange from "@/views/system/user-change";
-import {delUser} from "@/api/user";
+import UserChange from '@/views/system/user-change';
+import { delUser } from '@/api/user';
+import { getToken } from '@/utils/auth'
 
 export default {
-  components: {UserChange},
+  components: { UserChange },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -77,12 +78,21 @@ export default {
     return {
       list: [],
       listLoading: true,
+      userType: getToken(),
       form: {
         name: ''
       }
     }
   },
   created() {
+    if (this.userType !== 'current_manager') {
+      this.$alert('权限不足', {
+        callback: action => {
+          history.back()
+        }
+      })
+      return
+    }
     this.fetchData()
   },
   methods: {
@@ -90,6 +100,7 @@ export default {
       this.listLoading = true
       list().then(response => {
         this.list = response.data
+      }).finally(() => {
         this.listLoading = false
       })
     },

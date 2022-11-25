@@ -15,7 +15,7 @@
           <el-option label="借出" value="1" />
         </el-select>
         <el-button @click="query"><svg-icon icon-class="search" /></el-button>
-        <el-button style="float: right" type="primary" @click="create">添加书籍</el-button>
+        <el-button v-if="userType === 'current_manager'" style="float: right" type="primary" @click="create">添加书籍</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -56,9 +56,9 @@
           <template v-if="scope.row.delFlag === '0' && scope.row.status === '0'">
             <el-button type="primary" @click="borrow(scope.row)">借阅</el-button>
           </template>
-          <el-button type="warning" @click="edit(scope.row)">编辑</el-button>
+          <el-button v-if="userType === 'current_manager'" type="warning" @click="edit(scope.row)">编辑</el-button>
           <template v-if="scope.row.status === '0'">
-            <el-button :type="scope.row.delFlag | delFilter" @click="enable(scope.row)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>
+            <el-button :type="scope.row.delFlag | delFilter" :disabled="userType !== 'current_manager'" @click="enable(scope.row)">{{ scope.row.delFlag === "1" ? "启用" : "停用" }}</el-button>
           </template>
         </template>
       </el-table-column>
@@ -72,6 +72,7 @@
 </style>
 <script>
 import { getList, enable } from '@/api/list'
+import { getToken } from '@/utils/auth'
 
 export default {
   filters: {
@@ -97,6 +98,7 @@ export default {
     return {
       list: null,
       listLoading: true,
+      userType: getToken(),
       form: {
         name: ''
       }

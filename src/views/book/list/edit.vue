@@ -41,6 +41,7 @@
 // }
 import { save } from '@/api/list'
 import { bookStatuses, bookTypes } from '@/api/dictionary'
+import { getToken } from '@/utils/auth'
 export default {
   data() {
     return {
@@ -55,6 +56,14 @@ export default {
     }
   },
   created() {
+    if (getToken() !== 'current_manager') {
+      this.$alert('权限不足', {
+        callback: action => {
+          history.back()
+        }
+      })
+      return
+    }
     const info = this.$route.params
     if (info && JSON.stringify(info) !== '{}') {
       this.form = info
